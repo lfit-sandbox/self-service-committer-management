@@ -25,10 +25,12 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: Run a one-line script
+      env:
+        TEST_API_KEY: ${{ secrets.TEST_API_KEY }}
       run: |
         mkdir -p ~/.config/lftools/
         echo "[github]" >>  ~/.config/lftools/lftools.ini
-        echo "$TEST_API_KEY" >>  ~/.config/lftools/lftools.ini
+        echo "token = $TEST_API_KEY" >>  ~/.config/lftools/lftools.ini
         cat  ~/.config/lftools/lftools.ini
 
 
