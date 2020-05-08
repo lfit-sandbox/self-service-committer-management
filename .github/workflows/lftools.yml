@@ -50,3 +50,4 @@ jobs:
         pip install lftools
         lftools
         lftools github list lfit-sandbox --teams
+        lftools github list lfit-sandbox --team test-committers
