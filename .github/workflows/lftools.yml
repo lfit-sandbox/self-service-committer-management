@@ -26,6 +26,7 @@ jobs:
     # Runs a single command using the runners shell
     - name: Run a one-line script
       run: |
+        mkdir -p ~/.config/lftools/
         echo "[github]" >>  ~/.config/lftools/lftools.ini
         echo "$TEST_API_KEY" >>  ~/.config/lftools/lftools.ini
         cat  ~/.config/lftools/lftools.ini
