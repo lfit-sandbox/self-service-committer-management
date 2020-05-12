@@ -41,6 +41,9 @@ jobs:
         #echo "${{ github.event.before}}"
         #git diff --name-only --diff-filter=AM ${{ github.event.before }} ${{ github.sha }}
         git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
+        git diff HEAD^1 --name-only
+        #git diff-tree -m --no-commit-id -r "$GIT_COMMIT" "$GIT_COMMIT^1"
+
 
     - name: Set up Python
       uses: actions/setup-python@v1
