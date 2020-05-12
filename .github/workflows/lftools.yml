@@ -38,9 +38,9 @@ jobs:
     - name: show git diff
       run: |
         echo "${{ github.sha}}"
-        echo "${{ github.event.before}}"
-        echo test, and deploy your project.
-        git diff --name-only --diff-filter=AM ${{ github.event.before }} ${{ github.sha }}
+        #echo "${{ github.event.before}}"
+        #git diff --name-only --diff-filter=AM ${{ github.event.before }} ${{ github.sha }}
+        git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
 
     - name: Set up Python
       uses: actions/setup-python@v1
