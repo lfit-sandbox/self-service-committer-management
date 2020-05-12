@@ -58,6 +58,15 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install lftools
-        lftools github list lfit-sandbox --teams
-        lftools github list lfit-sandbox --team test-committers
-        lftools lfidapi match-ldap-to-info test/INFO.yaml test-committers --githuborg lfit-sandbox
+
+
+    - name: Run Python
+      run: |
+        echo $GITHUB_REPOSITORY
+        if [[ ${{ steps.getfile.outputs.files }} ~= "INFO.yaml" ]]; then
+            lftools github list lfit-sandbox --teams
+            lftools github list lfit-sandbox --team test-committers
+            lftools lfidapi match-ldap-to-info ${{ steps.getfile.outputs.files }}  test-committers --githuborg lfit-sandbox
+        else
+            echo "Not a change to an INFO file"
+        fi
