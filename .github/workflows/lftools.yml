@@ -62,11 +62,13 @@ jobs:
 
     - name: Run Python
       run: |
-        echo $GITHUB_REPOSITORY
-        if [[ ${{ steps.getfile.outputs.files }} ~= "INFO.yaml" ]]; then
+        org="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $1 }')"g
+        echo $org
+        #lfit-sandbox/self-service-committer-management
+        if [[ "${{ steps.getfile.outputs.files }}" ~= "INFO.yaml" ]]; then
             lftools github list lfit-sandbox --teams
             lftools github list lfit-sandbox --team test-committers
-            lftools lfidapi match-ldap-to-info ${{ steps.getfile.outputs.files }}  test-committers --githuborg lfit-sandbox
+            lftools lfidapi match-ldap-to-info ${{ steps.getfile.outputs.files }}  test-committers --githuborg "$org"
         else
             echo "Not a change to an INFO file"
         fi
