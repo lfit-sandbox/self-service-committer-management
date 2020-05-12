@@ -60,3 +60,4 @@ jobs:
         pip install lftools
         lftools github list lfit-sandbox --teams
         lftools github list lfit-sandbox --team test-committers
+        lftools lfidapi match-ldap-to-info test/INFO.yaml test-committers --githuborg lfit-sandbox
