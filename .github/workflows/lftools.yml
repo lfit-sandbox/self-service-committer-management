@@ -31,7 +31,6 @@ jobs:
         mkdir -p ~/.config/lftools/
         echo "[github]" >>  ~/.config/lftools/lftools.ini
         echo "token = $TEST_API_KEY" >>  ~/.config/lftools/lftools.ini
-        cat  ~/.config/lftools/lftools.ini
 
 
     # Runs a set of commands using the runners shell
@@ -40,8 +39,10 @@ jobs:
         echo "${{ github.sha}}"
         #echo "${{ github.event.before}}"
         #git diff --name-only --diff-filter=AM ${{ github.event.before }} ${{ github.sha }}
-        git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
-        git diff HEAD^1 --name-only
+        #git diff-tree --no-commit-id --name-only -r ${{ github.sha }}
+        #git diff --name-only --diff-filter=AM ${{ github.event.before }} ${{ github.sha }}
+        git diff --name-only ${{ github.event.before }} ${{ github.sha }}
+        #git diff HEAD^1 --name-only
         #git diff-tree -m --no-commit-id -r "$GIT_COMMIT" "$GIT_COMMIT^1"
 
 
