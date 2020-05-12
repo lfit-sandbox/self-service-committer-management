@@ -61,11 +61,13 @@ jobs:
 
 
     - name: Run Python
+      env:
+        MODIFIED_FILES: ${{ steps.getfile.outputs.files }}
       run: |
-        org="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $1 }')"g
+        org="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $1 }')"
         echo $org
         #lfit-sandbox/self-service-committer-management
-        if [[ "${{ steps.getfile.outputs.files }}" ~= "INFO.yaml" ]]; then
+        if [[ "$MODIFIED_FILES" =~ "INFO.yaml" ]]; then
             lftools github list lfit-sandbox --teams
             lftools github list lfit-sandbox --team test-committers
             lftools lfidapi match-ldap-to-info ${{ steps.getfile.outputs.files }}  test-committers --githuborg "$org"
