@@ -65,6 +65,7 @@ jobs:
         MODIFIED_FILES: ${{ steps.getfile.outputs.files }}
       run: |
         org="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $1 }')"
+        echo "modified files are $MODIFIED_FILES"
         echo $org
         #lfit-sandbox/self-service-committer-management
         if [[ "$MODIFIED_FILES" =~ "INFO.yaml" ]]; then
