@@ -69,13 +69,19 @@ jobs:
         MODIFIED_FILES: ${{ steps.getfile.outputs.files }}
       run: |
         org="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $1 }')"
+        repo="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $2 }')"
+        team="$repo-committers"
         echo "modified files are $MODIFIED_FILES"
         echo $org
-        #lfit-sandbox/self-service-committer-management
+        echo $repo
+        echo $team
+        #"$org"/self-service-committer-management
         if [[ "$MODIFIED_FILES" =~ "INFO.yaml" ]]; then
-            lftools github list lfit-sandbox --teams
-            lftools github list lfit-sandbox --team test-committers
-            lftools lfidapi match-ldap-to-info ${{ steps.getfile.outputs.files }}  test-committers --githuborg "$org"
+            lftools github list "$org" --teams
+            lftools github list "$org" --team $team
+            lftools github votes "$org" "$repo" 1
+            lftools lfidapi match-ldap-to-info ${{ steps.getfile.outputs.files }} "$team" --githuborg "$org"
+
         else
             echo "Not a change to an INFO file"
         fi
