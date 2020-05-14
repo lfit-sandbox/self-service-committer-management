@@ -68,6 +68,7 @@ jobs:
       env:
         MODIFIED_FILES: ${{ steps.getfile.outputs.files }}
       run: |
+        PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
         org="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $1 }')"
         repo="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $2 }')"
         team="$repo-committers"
@@ -79,7 +80,7 @@ jobs:
         if [[ "$MODIFIED_FILES" =~ "INFO.yaml" ]]; then
             lftools github list "$org" --teams
             lftools github list "$org" --team $team
-            lftools github votes "$org" "$repo" 1
+            lftools github votes "$org" "$repo" "$PR_NUMBER"
             lftools lfidapi match-ldap-to-info ${{ steps.getfile.outputs.files }} "$team" --githuborg "$org"
 
         else
