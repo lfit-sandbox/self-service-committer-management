@@ -44,15 +44,15 @@ jobs:
       run: |
         echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs)"
 
-        #    - name: echo output
-        #      run: |
-        #        echo ${{ steps.getfile.outputs.files }}
-        #
-        #    - name: show git diff
-        #      run: |
-        #        echo "${{ github.sha}}"
-        #        echo "${{ github.event.before}}"
-        #        git diff --name-only ${{ github.event.before }} ${{ github.sha }}
+    - name: echo output
+      run: |
+        echo ${{ steps.getfile.outputs.files }}
+
+    - name: show git diff
+      run: |
+        echo "${{ github.sha}}"
+        echo "${{ github.event.before}}"
+        git diff --name-only ${{ github.event.before }} ${{ github.sha }}
 
     - name: Set up Python
       uses: actions/setup-python@v1
@@ -65,10 +65,10 @@ jobs:
 
 
     - name: Match team to INFO.yaml
-      env:
-        MODIFIED_FILES: ${{ steps.getfile.outputs.files }}
+      #env:
+      #  MODIFIED_FILES: ${{ steps.getfile.outputs.files }}
       run: |
-
+        MODIFIED_FILES=$(echo ${{ steps.getfile.outputs.files }})
         PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
         org="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $1 }')"
         repo="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $2 }')"
