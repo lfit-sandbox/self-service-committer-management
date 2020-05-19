@@ -21,7 +21,8 @@ mailing_list:
     tag: ''
 realtime_discussion:
     type: ''
-    server: ''
+    s
+    rver: ''
     channel: ''
 meetings:
     - type: ''
@@ -30,7 +31,7 @@ meetings:
       server: ''
       channel: ''
       repeats: ''
-      time: 'baacdefghijklmnopq'
+      time: 'abaacdefghijklmnopq'
 repositories:
     - 'test'
 committers:
