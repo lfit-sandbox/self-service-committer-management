@@ -32,10 +32,9 @@ jobs:
         git ls-remote
         echo $GITHUB_REF
         PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
-        echo "pr number = "$PR_NUMBER""
+        echo "pr number = $PR_NUMBER"
         echo "base ref ${{ github.base_ref }}"
         echo "head ref ${{ github.head_ref }}"
-
         # This part doesnt work
         git fetch --no-tags --depth=1 origin ${{ github.base_ref }}
         git fetch --no-tags --depth=1 origin ${{ github.head_ref }}
