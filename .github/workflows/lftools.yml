@@ -43,8 +43,6 @@ jobs:
     - name: get MODIFIED_FILES
       id: getfile
       run: |
-         
-        #
         echo "Start new"
         git ls-remote
         git fetch --no-tags --depth=1 origin ${{ github.base_ref }}
@@ -55,19 +53,15 @@ jobs:
         # get back to the merge commit
         git checkout ${{ github.sha }}
         git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }}
-
         git diff --name-only \
           origin/${{ github.base_ref }} origin/${{ github.head_ref }} \
-            -- */INFO.yaml
-
+          -- */INFO.yaml
         #CHANGED_SPECS=$(git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }} -- cypress/integration)
         CHANGED_SPECS=$(git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }})
-
         if [ -n "$CHANGED_SPECS" ]; then
           echo "Running the following changed specs"
           echo $CHANGED_SPECS
         fi
-
         echo "End new"
         #OLD STUFF
         ####
