@@ -1,12 +1,7 @@
 # This is a basic workflow to help you get started with Actions
 ---
 name: CI
-
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
-  #  push:
-  #  branches: [ master ]
   pull_request:
     branches: [ master ]
   issue_comment:
@@ -14,19 +9,13 @@ on:
   pull_request_review:
     types: [submitted]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      #with:
-      #  fetch-depth: '2'
-        ##ref: ${{ github.head_ref }}
-
-    # Runs a single command using the runners shell
     - name: set api key
       env:
         TEST_API_KEY: ${{ secrets.TEST_API_KEY }}
@@ -36,7 +25,6 @@ jobs:
         echo "token = $TEST_API_KEY" >>  ~/.config/lftools/lftools.ini
 
 
-    # Runs a set of commands using the runners shell
     - name: get MODIFIED_FILES
       id: getfile
       run: |
