@@ -30,6 +30,8 @@ jobs:
       run: |
         echo "Start new"
         git ls-remote
+        PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+        echo "pr number = "$PR_NUMBER""
         git fetch --no-tags --depth=1 origin ${{ github.base_ref }}
         git fetch --no-tags --depth=1 origin ${{ github.head_ref }}
         # get the actual source for two branches
