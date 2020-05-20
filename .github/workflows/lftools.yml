@@ -35,6 +35,9 @@ jobs:
         echo "pr number = $PR_NUMBER"
         echo "base ref ${{ github.base_ref }}"
         echo "head ref ${{ github.head_ref }}"
+        echo " ${{ github.event.issue.number }}"
+        echo " ${{ github.event.issue.pull_request}}"
+
 
     - name: show git diff
       run: |
