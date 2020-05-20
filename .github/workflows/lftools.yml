@@ -35,43 +35,10 @@ jobs:
         echo "pr number = $PR_NUMBER"
         echo "base ref ${{ github.base_ref }}"
         echo "head ref ${{ github.head_ref }}"
-        # This part doesnt work
-        git fetch --no-tags --depth=1 origin ${{ github.base_ref }}
-        git fetch --no-tags --depth=1 origin ${{ github.head_ref }}
-        # get the actual source for two branches
-        git checkout origin/${{ github.base_ref }}
-        git checkout origin/${{ github.head_ref }}
-        # get back to the merge commit
-        git checkout ${{ github.sha }}
-        git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }}
-        git diff --name-only \
-          origin/${{ github.base_ref }} origin/${{ github.head_ref }} \
-          -- */INFO.yaml
-        #CHANGED_SPECS=$(git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }} -- cypress/integration)
-        CHANGED_SPECS=$(git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }})
-        if [ -n "$CHANGED_SPECS" ]; then
-          echo "Running the following changed specs"
-          echo $CHANGED_SPECS
-        fi
-        echo "End new"
-        #OLD STUFF
-        ####
-        git fetch origin master:master
-        git diff --name-only master
-        #echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs)"
-        echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only master | xargs)"
-        ####
-
-    - name: echo output
-      run: |
-        echo ${{ steps.getfile.outputs.files }}
 
     - name: show git diff
       run: |
         echo "New test"
-        git fetch origin master:master
-        git diff --name-only master
-
         echo "${{ github.sha}}"
         echo "${{ github.event.before}}"
         git diff --name-only ${{ github.event.before }} ${{ github.sha }}
