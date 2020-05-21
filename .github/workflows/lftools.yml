@@ -41,17 +41,17 @@ jobs:
         echo "GITHUB_EVENT_PATH $GITHUB_EVENT_PATH"
         echo "The PR number is ${{ github.event.number }}"
         PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+        if [[ -z $PR_NUMBER ]]; then
+          echo " ${{ github.event.issue.number }}"
+          PR_NUMBER=${{ github.event.issue.number }}
+        fi
         echo "pr number = $PR_NUMBER"
         echo "base ref ${{ github.base_ref }}"
         echo "head ref ${{ github.head_ref }}"
         echo " ${{ github.event.issue.number }}"
         echo " ${{ github.event.issue.pull_request}}"
         #Maybe
-        if [[ ${{ github.event.issue.number }} ]]; then
-            git fetch origin +refs/pull/${{ github.event.issue.number }}/merge
-        else
-            git fetch origin +refs/pull/$PR_NUMBER/merge
-        fi
+        git fetch origin +refs/pull/$PR_NUMBER/merge
         git checkout FETCH_HEAD
         git log -1
 
