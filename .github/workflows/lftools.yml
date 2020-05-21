@@ -1,7 +1,8 @@
-# This is a basic workflow to help you get started with Actions
 ---
 name: Self Service Verification
 on:
+  pull_request:
+    branches: [master]
   issue_comment:
     types: [created]
   pull_request_review:
@@ -19,6 +20,9 @@ jobs:
       env:
         TEST_API_KEY: ${{ secrets.TEST_API_KEY }}
       run: |
+        if [[ -z $TEST_API_KEY ]]; then
+          TEST_API_KEY=$GITHUB_TOKEN
+        fi
         mkdir -p ~/.config/lftools/
         echo "[github]" >>  ~/.config/lftools/lftools.ini
         echo "token = $TEST_API_KEY" >>  ~/.config/lftools/lftools.ini
