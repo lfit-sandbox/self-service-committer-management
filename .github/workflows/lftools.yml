@@ -24,19 +24,40 @@ jobs:
         echo "[github]" >>  ~/.config/lftools/lftools.ini
         echo "token = $TEST_API_KEY" >>  ~/.config/lftools/lftools.ini
 
+    - name: Create comment for PR
+      if: github.event_name == 'pull_request'
+      uses: peter-evans/create-or-update-comment@v1
+      with:
+        issue-number: ${{tojson(github.event.number)}}
+        body: |
+            @${{ github.actor }} testing adding comment.
+
+    - name: Print GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: |
+        echo "The event name is ${{ github.event_name }}"
+        echo "$GITHUB_CONTEXT"
 
     - name: get MODIFIED_FILES
       id: getfile
       run: |
         echo "Start new"
         git ls-remote
+        git log -1
         echo $GITHUB_REF
+        echo $GITHUB_EVENT_PATH
+        echo "The PR number is ${{ github.event.number }}"
         PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
         echo "pr number = $PR_NUMBER"
         echo "base ref ${{ github.base_ref }}"
         echo "head ref ${{ github.head_ref }}"
         echo " ${{ github.event.issue.number }}"
         echo " ${{ github.event.issue.pull_request}}"
+        #Maybe
+        git fetch origin +refs/pull/${{ github.event.issue.number }}/merge
+        git checkout FETCH_HEAD
+        git log -1
 
 
     - name: show git diff
