@@ -81,8 +81,12 @@ jobs:
       #env:
       #  MODIFIED_FILES: ${{ steps.getfile.outputs.files }}
       run: |
-        MODIFIED_FILES=$(echo ${{ steps.getfile.outputs.files }})
-        PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+        #Echo this works for merge and pull requests
+        #MODIFIED_FILES=$(echo ${{ steps.getfile.outputs.files }})
+        #PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+        #This works for comments
+        MODIFIED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+        PR_NUMBER=${{ github.event.issue.number }}
         org="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $1 }')"
         repo="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $2 }')"
         team="$repo-committers"
