@@ -24,14 +24,6 @@ jobs:
         echo "[github]" >>  ~/.config/lftools/lftools.ini
         echo "token = $TEST_API_KEY" >>  ~/.config/lftools/lftools.ini
 
-    - name: Create comment for PR
-      if: github.event_name == 'pull_request'
-      uses: peter-evans/create-or-update-comment@v1
-      with:
-        issue-number: ${{tojson(github.event.number)}}
-        body: |
-            @${{ github.actor }} testing adding comment.
-
     - name: Print GitHub context
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
