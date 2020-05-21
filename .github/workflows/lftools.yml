@@ -63,7 +63,8 @@ jobs:
         echo "New test"
         echo "${{ github.sha}}"
         echo "${{ github.event.before}}"
-        git diff --name-only ${{ github.event.before }} ${{ github.sha }}
+        git diff --name-only HEAD HEAD~1
+        #git diff --name-only ${{ github.event.before }} ${{ github.sha }}
 
     - name: Set up Python
       uses: actions/setup-python@v1
@@ -83,7 +84,8 @@ jobs:
         #MODIFIED_FILES=$(echo ${{ steps.getfile.outputs.files }})
         #PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
         #This works for comments
-        MODIFIED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+        #MODIFIED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+        MODIFIED_FILES=$(git diff --name-only HEAD HEAD~1)
         PR_NUMBER=${{ github.event.issue.number }}
         org="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $1 }')"
         repo="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $2 }')"
