@@ -15,6 +15,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: '2'
 
     - name: set api key
       env:
@@ -41,9 +43,9 @@ jobs:
         echo "GITHUB_EVENT_PATH $GITHUB_EVENT_PATH"
         echo "The PR number is ${{ github.event.number }}"
         PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
-        if [[ -z $PR_NUMBER ]]; then
-          echo " ${{ github.event.issue.number }}"
-          PR_NUMBER=${{ github.event.issue.number }}
+        if [[ -z "$PR_NUMBER" ]]; then
+        echo "${{ github.event.issue.number }}"
+        PR_NUMBER=${{ github.event.issue.number }}
         fi
         echo "pr number = $PR_NUMBER"
         echo "base ref ${{ github.base_ref }}"
@@ -97,7 +99,6 @@ jobs:
             echo "is the vote good? $?"
             lftools lfidapi match-ldap-to-info $MODIFIED_FILES "$team" --githuborg "$org"
             lftools github list "$org" --team $team
-            #need to submit the pr... 
             echo "lftools github submit-pr $org $repo $PR_NUMBER"
 
         else
