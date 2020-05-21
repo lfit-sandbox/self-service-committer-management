@@ -99,7 +99,7 @@ jobs:
             lftools github list "$org" --teams
             lftools github list "$org" --team $team
             lftools github votes "$org" "$repo" "$PR_NUMBER"
-            lftools lfidapi match-ldap-to-info ${{ steps.getfile.outputs.files }} "$team" --githuborg "$org"
+            lftools lfidapi match-ldap-to-info $MODIFIED_FILES "$team" --githuborg "$org"
 
         else
             echo "Not a change to an INFO file"
