@@ -20,8 +20,12 @@ jobs:
       env:
         TEST_API_KEY: ${{ secrets.TEST_API_KEY }}
       run: |
+        echo $GITHUB_TOKEN
+        echo $TEST_API_KEY
         if [[ -z $TEST_API_KEY ]]; then
+          echo $GITHUB_TOKEN
           TEST_API_KEY=$GITHUB_TOKEN
+          echo $TEST_API_KEY
         fi
         mkdir -p ~/.config/lftools/
         echo "[github]" >>  ~/.config/lftools/lftools.ini
