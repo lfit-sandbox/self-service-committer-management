@@ -96,10 +96,13 @@ jobs:
         echo $team
         #"$org"/self-service-committer-management
         if [[ "$MODIFIED_FILES" =~ "INFO.yaml" ]]; then
-            lftools github list "$org" --teams
             lftools github list "$org" --team $team
             lftools github votes "$org" "$repo" "$PR_NUMBER"
+            echo "is the vote good? $?"
             lftools lfidapi match-ldap-to-info $MODIFIED_FILES "$team" --githuborg "$org"
+            lftools github list "$org" --team $team
+            #need to submit the pr... 
+            echo "lftools github submit-pr $org $repo $PR_NUMBER"
 
         else
             echo "Not a change to an INFO file"
