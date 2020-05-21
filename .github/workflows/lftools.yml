@@ -87,15 +87,17 @@ jobs:
         #MODIFIED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
         MODIFIED_FILES=$(git diff --name-only HEAD HEAD~1)
         PR_NUMBER=${{ github.event.issue.number }}
+        echo "github repositroy is $GITHUB_REPOSITORY"
         org="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $1 }')"
-        repo="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $2 }')"
-        team="$repo-committers"
+        #repo="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $2 }')"
         echo "modified files are $MODIFIED_FILES"
         echo $org
         echo $repo
         echo $team
         #"$org"/self-service-committer-management
         if [[ "$MODIFIED_FILES" =~ "INFO.yaml" ]]; then
+            repo=$(echo $MODIFIED_FILES | awk -F "/" '{ print $1}')
+            team="$repo-committers"
             lftools github list "$org" --team $team
             lftools github votes "$org" "$repo" "$PR_NUMBER"
             echo "is the vote good? $?"
