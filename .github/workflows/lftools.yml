@@ -43,8 +43,8 @@ jobs:
         echo "GITHUB_EVENT_PATH $GITHUB_EVENT_PATH"
         echo "The PR number is ${{ github.event.number }}"
         PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
-        if [[ -z "$PR_NUMBER" ]]; then
-        echo "${{ github.event.issue.number }}"
+        if [[ "$PR_NUMBER" == "master" ]]; then
+        echo "changing PR_NUMBER to ${{ github.event.issue.number }}"
         PR_NUMBER=${{ github.event.issue.number }}
         fi
         echo "pr number = $PR_NUMBER"
