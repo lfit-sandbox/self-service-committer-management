@@ -47,7 +47,11 @@ jobs:
         echo " ${{ github.event.issue.number }}"
         echo " ${{ github.event.issue.pull_request}}"
         #Maybe
-        git fetch origin +refs/pull/${{ github.event.issue.number }}/merge
+        if [[ ${{ github.event.issue.number }} ]]; then
+            git fetch origin +refs/pull/${{ github.event.issue.number }}/merge
+        else
+            git fetch origin +refs/pull/$PR_NUMBER/merge
+        fi
         git checkout FETCH_HEAD
         git log -1
 
