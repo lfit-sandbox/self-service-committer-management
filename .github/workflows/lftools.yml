@@ -92,6 +92,7 @@ jobs:
               echo "Vote completed submitting pr"
             lftools lfidapi match-ldap-to-info $MODIFIED_FILES "$team" --githuborg "$org"
             lftools github list "$org" --team $team
+            echo "lftools github submit-pr $org $repo $PR_NUMBER"
             lftools github submit-pr $org $repo $PR_NUMBER
             fi
         else
