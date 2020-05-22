@@ -21,8 +21,7 @@ mailing_list:
     tag: ''
 realtime_discussion:
     type: ''
-    s
-    rver: ''
+    server: ''
     channel: ''
 meetings:
     - type: ''
@@ -42,8 +41,8 @@ committers:
       id: 'agardner'
       github_id: 'Aricg'
       timezone: 'America/Montreal'
-    - name: 'Vanessa Rene Valderrama'	
-      company: 'linuxfoundation'	
-      email: 'vvalderrama@linuxfoundation.org'	
-      id: 'valderrv'	
-      github_id: 'valderrv'
+    - name: 'Vanessa Rene Valderrama'
+      company: 'linuxfoundation'
+      email: 'vvalderrama@linuxfoundation.org'
+      id: 'valderrv'
+      github_id: 'vanessavalderrama'
