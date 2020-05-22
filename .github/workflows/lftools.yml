@@ -31,6 +31,8 @@ jobs:
         mkdir -p ~/.config/lftools/
         echo "[github]" >>  ~/.config/lftools/lftools.ini
         echo "token = $TEST_API_KEY" >>  ~/.config/lftools/lftools.ini
+        echo "[github.lfit-sandbox]" >>  ~/.config/lftools/lftools.ini
+        echo "token = $TEST_API_KEY" >>  ~/.config/lftools/lftools.ini
 
     - name: Print GitHub context
       env:
