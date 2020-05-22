@@ -1,8 +1,8 @@
+  #  pull_request:
+  #  branches: [master]
 ---
 name: Self Service Verification
 on:
-  pull_request:
-    branches: [master]
   issue_comment:
     types: [created]
   pull_request_review:
