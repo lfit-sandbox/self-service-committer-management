@@ -78,7 +78,7 @@ jobs:
         PR_NUMBER=${{ github.event.issue.number }}
         echo "github repositroy is $GITHUB_REPOSITORY"
         org="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $1 }')"
-        repo="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $2 }')"
+        ghrepo="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $2 }')"
         echo "modified files are $MODIFIED_FILES"
         if [[ "$MODIFIED_FILES" =~ "INFO.yaml" ]]; then
             repo=$(echo $MODIFIED_FILES | awk -F "/" '{ print $1}')
@@ -92,8 +92,8 @@ jobs:
               echo "Vote completed submitting pr"
             lftools lfidapi match-ldap-to-info $MODIFIED_FILES "$team" --githuborg "$org"
             lftools github list "$org" --team $team
-            echo "lftools github submit-pr $org $repo $PR_NUMBER"
-            lftools github submit-pr $org $repo $PR_NUMBER
+            echo "lftools github submit-pr $org $ghrepo $PR_NUMBER"
+            lftools github submit-pr $org $ghrepo $PR_NUMBER
             fi
         else
             echo "Not a change to an INFO file"
