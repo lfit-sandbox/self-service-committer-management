@@ -84,16 +84,17 @@ jobs:
             repo=$(echo $MODIFIED_FILES | awk -F "/" '{ print $1}')
             team="$repo-committers"
             lftools github list "$org" --team $team
-            lftools github votes "$org" "$repo" "$PR_NUMBER"
+            lftools github votes "$org" "$ghrepo" "$PR_NUMBER"
+            lftools infofile check-votes $MODIFIED_FILES $org --github_repo $ghrepo $PR_NUMBER
             exit_status="$?"
             if [[ "$exit_status" -ne 0 ]]; then
               echo "Vote not yet complete"
             else
               echo "Vote completed submitting pr"
-            lftools lfidapi match-ldap-to-info $MODIFIED_FILES "$team" --githuborg "$org"
-            lftools github list "$org" --team $team
-            echo "lftools github submit-pr $org $ghrepo $PR_NUMBER"
-            lftools github submit-pr $org $ghrepo $PR_NUMBER
+              lftools lfidapi match-ldap-to-info $MODIFIED_FILES "$team" --githuborg "$org"
+              lftools github list "$org" --team $team
+              echo "lftools github submit-pr $org $ghrepo $PR_NUMBER"
+              lftools github submit-pr $org $ghrepo $PR_NUMBER
             fi
         else
             echo "Not a change to an INFO file"
