@@ -9,7 +9,7 @@ on:
 jobs:
 
   test:
-    name: Create a PR message
+    name: Run a demo test
     runs-on: ubuntu-latest
     steps:
 
@@ -18,7 +18,6 @@ jobs:
           mkdir -p artifacts
           cat > artifacts/message.md <<EOF
           # Test Message
-          
           You must ask the current committer listed in the INFO file
           to approve this change, once enough approvals are submitted
           the pull request will automatically submit..
