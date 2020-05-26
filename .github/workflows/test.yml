@@ -1,4 +1,4 @@
-name: Demo CI
+name: Create PR message
 
 on:
   pull_request:
