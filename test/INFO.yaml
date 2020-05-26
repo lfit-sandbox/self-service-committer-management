@@ -28,7 +28,7 @@ meetings:
       agenda: ''
       url: ''
       server: ''
-      channel: ''
+      channel: 'a'
       repeats: 'aa'
       time: 'aabaacdefghijklmnopq'
 repositories:
