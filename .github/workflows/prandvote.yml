@@ -23,11 +23,12 @@ jobs:
       run: |
         echo "The event name is ${{ github.event_name }}"
         echo "ISSUE NUMBER: $ISSUE_NUMBER"
+        echo "The issue number is also ${{ github.event.issue.number }}"
 
     - name: Create comment
       uses: peter-evans/create-or-update-comment@v1
       with:
-        issue-number: "$ISSUE_NUMBER"
+        issue-number: ${{ github.event.issue.number }}
         body: |
           This is a multi-line test comment
           - With GitHub **Markdown**
