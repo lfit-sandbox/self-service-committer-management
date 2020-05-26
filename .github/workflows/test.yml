@@ -13,6 +13,37 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+      - name: set api key
+        env:
+          TEST_API_KEY: ${{ secrets.TEST_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo $GITHUB_TOKEN
+          echo $TEST_API_KEY
+          if [[ -z $TEST_API_KEY ]]; then
+            echo $GITHUB_TOKEN
+            TEST_API_KEY=$GITHUB_TOKEN
+            echo $TEST_API_KEY
+          fi
+          mkdir -p ~/.config/lftools/
+          echo "[github]" >>  ~/.config/lftools/lftools.ini
+          echo "token = $TEST_API_KEY" >>  ~/.config/lftools/lftools.ini
+          echo "[github.lfit-sandbox]" >>  ~/.config/lftools/lftools.ini
+          echo "token = $TEST_API_KEY" >>  ~/.config/lftools/lftools.
+
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.6'
+      - name: Install dependencies
+        run: |
+          if [[ ${{ github.event_name }} == "issue_comment" ]]; then
+            python -m pip install --upgrade pip
+            git clone "https://gerrit.linuxfoundation.org/infra/releng/lftools"
+            cd lftools
+            pip install .
+          fi
+
       - name: main
         run: |
           mkdir -p artifacts
@@ -33,6 +64,9 @@ jobs:
 
           </details>
           EOF
+
+          foo=$(lftools github votes lfit-sandbox self-service-committer-management 9)
+          echo $foo >> artifacts/message.md
 
       - name: Save PR message as artifact
         uses: actions/upload-artifact@v1
