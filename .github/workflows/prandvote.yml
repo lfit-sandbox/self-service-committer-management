@@ -14,13 +14,15 @@ jobs:
       with:
         fetch-depth: '2'
 
+    - name: Set GITHUB REF
+      run: echo "::set-env name=ISSUE_NUMBER::$(echo $GITHUB_REF | awk -F'/' '{ print $3 }')"
+
     - name: Print GitHub context
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
       run: |
         echo "The event name is ${{ github.event_name }}"
-        echo "$GITHUB_CONTEXT"
-        echo "ISSUE NUMBER: ${{ github.event.issue.number }}"
+        echo "ISSUE NUMBER: $ISSUE_NUMBER"
 
     - name: Create comment
       uses: peter-evans/create-or-update-comment@v1
