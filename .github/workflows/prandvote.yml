@@ -1,0 +1,41 @@
+---
+name: Self Service Verification
+on:
+  pull_request:
+    branches: [master]
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: '2'
+
+    - name: Print GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: |
+        echo "The event name is ${{ github.event_name }}"
+        echo "$GITHUB_CONTEXT"
+        echo "ISSUE NUMBER: ${{ github.event.issue.number }}"
+
+    - name: Create comment
+      uses: peter-evans/create-or-update-comment@v1
+      with:
+        issue-number: ${{ github.event.issue.number }}
+        body: |
+          This is a multi-line test comment
+          - With GitHub **Markdown**
+          - Created by [create-or-update-comment][1]
+
+          [1]: https://github.com/peter-evans/create-or-update-comment
+        reactions: '+1'
+
+
+    - name: Match team to INFO.yaml
+      run: |
+        echo "Not a change to an INFO file or not an issue_comment job"
+        exit 1

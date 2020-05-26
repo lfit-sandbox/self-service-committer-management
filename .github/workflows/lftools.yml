@@ -1,12 +1,8 @@
 ---
-name: Self Service Verification
+name: Self Service merge
 on:
-  pull_request:
-    branches: [master]
   issue_comment:
     types: [created]
-  pull_request_review:
-    types: [submitted]
 
 jobs:
   build:
@@ -68,8 +64,13 @@ jobs:
         python-version: '3.6'
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install lftools
+        if [[ ${{ github.event_name }} == "issue_comment" ]]; then
+          python -m pip install --upgrade pip
+          git clone "https://gerrit.linuxfoundation.org/infra/releng/lftools"
+          cd lftools
+          git fetch "ssh://agardner@gerrit.linuxfoundation.org:29418/releng/lftools" refs/changes/77/64077/4 && git checkout FETCH_HEAD
+          pip install .
+        fi
 
 
     - name: Match team to INFO.yaml
@@ -80,7 +81,7 @@ jobs:
         org="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $1 }')"
         ghrepo="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $2 }')"
         echo "modified files are $MODIFIED_FILES"
-        if [[ "$MODIFIED_FILES" =~ "INFO.yaml" ]]; then
+        if [[ "$MODIFIED_FILES" =~ "INFO.yaml" ]] && [[ ${{ github.event_name }} == "issue_comment" ]]; then
             repo=$(echo $MODIFIED_FILES | awk -F "/" '{ print $1}')
             team="$repo-committers"
             lftools github list "$org" --team $team
@@ -97,5 +98,6 @@ jobs:
               lftools github submit-pr $org $ghrepo $PR_NUMBER
             fi
         else
-            echo "Not a change to an INFO file"
+            echo "Not a change to an INFO file or not an issue_comment job"
+            exit 1
         fi
