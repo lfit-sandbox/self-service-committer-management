@@ -14,9 +14,9 @@ jobs:
     steps:
       - name: main
         env:
-          #GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           GITHUB_TOKEN: "${{ secrets.TEST_API_KEY }}"
           WORKFLOW_NAME: "Create PR message"
+          #GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           # the name of the artifact whose content comment published by PR. Must have a single markdown file inside.
           MSG_ARTIFACT_NAME: "pr_message"
           # How far back to look for finished runs, in minutes.
