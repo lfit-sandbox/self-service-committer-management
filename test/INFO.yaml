@@ -29,7 +29,7 @@ meetings:
       url: ''
       server: ''
       channel: ''
-      repeats: ''
+      repeats: 'aa'
       time: 'aabaacdefghijklmnopq'
 repositories:
     - 'test'
