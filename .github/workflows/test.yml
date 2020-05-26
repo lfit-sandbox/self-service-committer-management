@@ -9,7 +9,7 @@ on:
 jobs:
 
   test:
-    name: Run a demo test
+    name: Create a PR message
     runs-on: ubuntu-latest
     steps:
 
@@ -19,6 +19,10 @@ jobs:
           cat > artifacts/message.md <<EOF
           # Test Message
           
+          You must ask the current committer listed in the INFO file
+          to approve this change, once enough approvals are submitted
+          the pull request will automatically submit..
+
           Note that there are no secrets exposed in this test...
 
           <details>
