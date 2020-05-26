@@ -68,7 +68,6 @@ jobs:
           python -m pip install --upgrade pip
           git clone "https://gerrit.linuxfoundation.org/infra/releng/lftools"
           cd lftools
-          git fetch "ssh://agardner@gerrit.linuxfoundation.org:29418/releng/lftools" refs/changes/77/64077/4 && git checkout FETCH_HEAD
           pip install .
         fi
 
