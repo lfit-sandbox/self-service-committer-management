@@ -37,12 +37,10 @@ jobs:
           python-version: '3.6'
       - name: Install dependencies
         run: |
-          if [[ ${{ github.event_name }} == "issue_comment" ]]; then
-            python -m pip install --upgrade pip
-            git clone "https://gerrit.linuxfoundation.org/infra/releng/lftools"
-            cd lftools
-            pip install .
-          fi
+          python -m pip install --upgrade pip
+          git clone "https://gerrit.linuxfoundation.org/infra/releng/lftools"
+          cd lftools
+          pip install .
 
       - name: main
         run: |
