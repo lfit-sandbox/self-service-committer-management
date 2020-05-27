@@ -27,7 +27,7 @@ meetings:
     - type: ''
       agenda: ''
       url: ''
-      server: ''
+      server: 'a'
       channel: 'a'
       repeats: 'aa'
       time: 'aabaacdefghijklmnopq'
