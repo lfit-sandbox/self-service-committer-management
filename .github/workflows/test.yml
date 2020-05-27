@@ -60,7 +60,8 @@ jobs:
         run: |
           #we dont have modified files...
           MODIFIED_FILES=$(git diff --name-only HEAD HEAD~1)
-          PR_NUMBER=${{ github.event.issue.number }}
+          #PR_NUMBER=${{ github.event.issue.number }}
+          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
           org="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $1 }')"
           ghrepo="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $2 }')"
           repo=$(echo $MODIFIED_FILES | awk -F "/" '{ print $1}')
