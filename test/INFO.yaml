@@ -26,7 +26,7 @@ realtime_discussion:
 meetings:
     - type: ''
       agenda: ''
-      url: ''
+      url: 'a'
       server: 'a'
       channel: 'a'
       repeats: 'aa'
