@@ -35,9 +35,7 @@ jobs:
           echo $GITHUB_TOKEN
           echo $TEST_API_KEY
           if [[ -z $TEST_API_KEY ]]; then
-            echo $GITHUB_TOKEN
             TEST_API_KEY=$GITHUB_TOKEN
-            echo $TEST_API_KEY
           fi
           mkdir -p ~/.config/lftools/
           echo "[github]" >>  ~/.config/lftools/lftools.ini
@@ -58,18 +56,14 @@ jobs:
 
       - name: main
         run: |
-          #we dont have modified files...
           MODIFIED_FILES=$(git diff --name-only HEAD HEAD~1)
-          #PR_NUMBER=${{ github.event.issue.number }}
           PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
           org="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $1 }')"
           ghrepo="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $2 }')"
           repo=$(echo $MODIFIED_FILES | awk -F "/" '{ print $1}')
           team="$repo-committers"
 
-          echo "PR_NUMBER= $PR_NUMBER"
-          echo "github repositroy is $GITHUB_REPOSITORY"
-          echo "MODIFIED_FILES= $MODIFIED_FILES"
+
           mkdir -p artifacts
           cat > artifacts/message.md <<EOF
           # How to update your committers
@@ -89,8 +83,13 @@ jobs:
 
           foo=$(lftools github votes $org $ghrepo $PR_NUMBER)
           echo $foo >> artifacts/message.md
-          #bar=$(lftools github list "$org" --team $team)
-          #echo $bar >> artifacts/message.md
+          echo "PR_NUMBER=$PR_NUMBER"  >> artifacts/message.md
+          echo "github repositroy is $GITHUB_REPOSITORY" >> artifacts/message.md
+          echo "MODIFIED_FILES=$MODIFIED_FILES" >> artifacts/message.md
+          echo "team=$team" >> artifacts/message.md
+          echo "repo=$repo" >> artifacts/message.md
+          echo "Current Committers:"
+          cat $MODIFIED_FILES | yq -r '.committers[].github_id' >> artifacts/message.md
 
 
       - name: Save PR message as artifact
