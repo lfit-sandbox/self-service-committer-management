@@ -89,8 +89,8 @@ jobs:
 
           foo=$(lftools github votes $org $ghrepo $PR_NUMBER)
           echo $foo >> artifacts/message.md
-          bar=$(lftools github list "$org" --team $team)
-          echo $bar >> artifacts/message.md
+          #bar=$(lftools github list "$org" --team $team)
+          #echo $bar >> artifacts/message.md
 
 
       - name: Save PR message as artifact
