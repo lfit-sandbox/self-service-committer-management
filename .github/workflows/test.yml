@@ -64,6 +64,7 @@ jobs:
           repo=$(echo $MODIFIED_FILES | awk -F "/" '{ print $1}')
           team="$repo-committers"
           committers=$(cat $MODIFIED_FILES | yq -r '.committers[].github_id')
+          foo=$(lftools github votes $org $ghrepo $PR_NUMBER)
 
           mkdir -p artifacts
           cat > artifacts/message.md <<EOF
@@ -71,12 +72,18 @@ jobs:
           Please ask the current committers listed in the INFO file
           to approve this change, once enough approvals are submitted
           the pull request will automatically submit..
+          The committers are
+          $committers
+
           github repositroy is $GITHUB_REPOSITORY
-          PR_NUMBER=$PR_NUMBER
-          MODIFIED_FILES=$MODIFIED_FILES
-          team=$team
-          repo=$repo
-          committers=$committers
+
+          INFO about this change
+
+          PR_NUMBER       $PR_NUMBER
+          MODIFIED_FILES  $MODIFIED_FILES
+          team            $team
+          repo            $repo
+          committers      $committers
 
           <details>
           <summary>PR to merge $GITHUB_HEAD_REF $GITHUB_SHA -> $GITHUB_BASE_REF</summary>
@@ -86,10 +93,11 @@ jobs:
           \`\`\`
 
           </details>
+
+          current state of patchset
+          $foo
           EOF
 
-          foo=$(lftools github votes $org $ghrepo $PR_NUMBER)
-          echo $foo >> artifacts/message.md
 
 
       - name: Save PR message as artifact
