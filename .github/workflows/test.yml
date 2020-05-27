@@ -88,6 +88,8 @@ jobs:
           echo "MODIFIED_FILES=$MODIFIED_FILES" >> artifacts/message.md
           echo "team=$team" >> artifacts/message.md
           echo "repo=$repo" >> artifacts/message.md
+          echo "Current Committers:"
+          cat $MODIFIED_FILES | yq -r '.committers[].github_id' >> artifacts/message.md
 
 
       - name: Save PR message as artifact
