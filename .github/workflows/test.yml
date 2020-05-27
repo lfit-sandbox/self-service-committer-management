@@ -53,6 +53,7 @@ jobs:
           git clone "https://gerrit.linuxfoundation.org/infra/releng/lftools"
           cd lftools
           pip install .
+          pip install yq
 
       - name: main
         run: |
