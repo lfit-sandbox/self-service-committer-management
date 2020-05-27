@@ -7,11 +7,25 @@ on:
     types: [submitted]
 
 jobs:
-
   test:
-    name: Run a demo test
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: '2'
+
+      - name: get MODIFIED_FILES
+        run: |
+          echo "Start new"
+          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
+          if [[ "$PR_NUMBER" == "master" ]]; then
+          echo "changing PR_NUMBER to ${{ github.event.issue.number }}"
+          PR_NUMBER=${{ github.event.issue.number }}
+          fi
+          echo "pr number = $PR_NUMBER"
+          git fetch origin +refs/pull/$PR_NUMBER/merge
+          git checkout FETCH_HEAD
+          git log -1
 
       - name: set api key
         env:
@@ -44,14 +58,23 @@ jobs:
 
       - name: main
         run: |
+          #we dont have modified files...
+          MODIFIED_FILES=$(git diff --name-only HEAD HEAD~1)
+          PR_NUMBER=${{ github.event.issue.number }}
+          org="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $1 }')"
+          ghrepo="$(echo $GITHUB_REPOSITORY | awk -F "/" '{ print $2 }')"
+          repo=$(echo $MODIFIED_FILES | awk -F "/" '{ print $1}')
+          team="$repo-committers"
+
+          echo "PR_NUMBER= $PR_NUMBER"
+          echo "github repositroy is $GITHUB_REPOSITORY"
+          echo "MODIFIED_FILES= $MODIFIED_FILES"
           mkdir -p artifacts
           cat > artifacts/message.md <<EOF
-          # Test Message
-          You must ask the current committer listed in the INFO file
+          # How to update your committers
+          Please ask the current committers listed in the INFO file
           to approve this change, once enough approvals are submitted
           the pull request will automatically submit..
-
-          Note that there are no secrets exposed in this test...
 
           <details>
           <summary>PR to merge $GITHUB_HEAD_REF $GITHUB_SHA -> $GITHUB_BASE_REF</summary>
@@ -63,8 +86,11 @@ jobs:
           </details>
           EOF
 
-          foo=$(lftools github votes lfit-sandbox self-service-committer-management 9)
+          foo=$(lftools github votes $org $ghrepo $PR_NUMBER)
           echo $foo >> artifacts/message.md
+          bar=$(lftools github list "$org" --team $team)
+          echo $bar >> artifacts/message.md
+
 
       - name: Save PR message as artifact
         uses: actions/upload-artifact@v1
